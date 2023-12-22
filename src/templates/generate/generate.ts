@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { globSync } from 'glob';
 import Handlebars from 'handlebars';
 import { builtins } from '@pkg/helpers';
 
@@ -27,19 +28,28 @@ function generate({
 
   const templateDirectory = resolve(path, template, 'template');
 
-  const files = readdirSync(templateDirectory).filter((file) =>
-    file.endsWith('handlebars')
+  const directoryContent = globSync(`${templateDirectory}/**/*`, {
+    withFileTypes: true,
+  });
+
+  console.log(directoryContent);
+  /*
+  const files = directoryContent.filter((file) =>
+    file.name.endsWith('handlebars')
   );
 
   files.forEach((file) => {
-    const name = Handlebars.compile(file.replace('.handlebars', ''))(context);
+    const name = Handlebars.compile(file.name.replace('.handlebars', ''))(
+      context
+    );
 
     const content = Handlebars.compile(
-      readFileSync(resolve(templateDirectory, file), 'utf-8')
+      readFileSync(resolve(templateDirectory, file.name), 'utf-8')
     )(context);
 
-    writeFileSync(resolve(process.cwd(), name), content);
+    // writeFileSync(resolve(process.cwd(), name), content);
   });
+  */
 }
 
 export { generate };
