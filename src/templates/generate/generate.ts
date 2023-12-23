@@ -32,7 +32,7 @@ function generate({
     withFileTypes: true,
   });
 
-  console.log(directoryContent);
+  // console.log(directoryContent);
   /*
   const files = directoryContent.filter((file) =>
     file.name.endsWith('handlebars')

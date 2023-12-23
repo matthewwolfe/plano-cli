@@ -11,11 +11,9 @@ const contextSchema = z.array(
   })
 );
 
-function getContext(path: string) {
-  const file = resolve(path, 'context.json');
-  const json = readFileSync(file, 'utf-8');
-
-  return contextSchema.parse(JSON.parse(json));
+async function getContext(path: string) {
+  const { context } = await import(resolve(path, 'context.js'));
+  return contextSchema.parse(context);
 }
 
 export { getContext };

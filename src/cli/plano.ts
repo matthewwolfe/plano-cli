@@ -43,7 +43,7 @@ program
         ]);
       }
 
-      const prompts = getContext(`${template.path}/${name}`);
+      const prompts = await getContext(`${template.path}/${name}`);
       const context = await inquirer.prompt(prompts);
 
       generate({
