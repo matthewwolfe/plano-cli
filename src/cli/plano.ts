@@ -43,12 +43,15 @@ program
         ]);
       }
 
-      const prompts = await getContext(`${template.path}/${name}`);
-      const context = await inquirer.prompt(prompts);
+      const { context, helpers = {} } = await getContext(
+        `${template.path}/${name}`
+      );
+
+      const answers = await inquirer.prompt<Record<string, unknown>>(context);
 
       generate({
-        context,
-        helpers: {},
+        context: answers,
+        helpers,
         templatePath: template,
       });
     } catch (e) {
@@ -56,28 +59,6 @@ program
         console.log(e.message);
       }
     }
-
-    /*
-    inquirer
-      .prompt([
-        {
-          type: 'input',
-          name: 'name',
-          message: `Are you sure you want to use the "${name}" template`,
-        },
-      ])
-      .then((answers) => {
-        console.log(answers);
-        // Use user feedback for... whatever!!
-      })
-      .catch((error) => {
-        if (error.isTtyError) {
-          // Prompt couldn't be rendered in the current environment
-        } else {
-          // Something else went wrong
-        }
-      });
-      */
   });
 
 program.parse();

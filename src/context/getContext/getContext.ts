@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 
@@ -11,9 +10,15 @@ const contextSchema = z.array(
   })
 );
 
+const helpersSchema = z.record(z.function(z.tuple([z.string()]), z.string()));
+
 async function getContext(path: string) {
-  const { context } = await import(resolve(path, 'context.js'));
-  return contextSchema.parse(context);
+  const { context, helpers } = await import(resolve(path, 'context.js'));
+
+  return {
+    context: contextSchema.parse(context),
+    helpers: helpersSchema.parse(helpers),
+  };
 }
 
 export { getContext };

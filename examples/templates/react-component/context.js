@@ -6,3 +6,7 @@ export const context = [
     type: 'input',
   },
 ];
+
+export const helpers = {
+  upperCase: (value) => value.toUpperCase(),
+};
