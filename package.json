@@ -1,12 +1,15 @@
 {
   "name": "plano-cli",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "",
   "license": "MIT",
   "files": [
     "dist",
     "package.json"
   ],
+  "bin": {
+    "plano": "./dist/cli/plano.js"
+  },
   "type": "module",
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",

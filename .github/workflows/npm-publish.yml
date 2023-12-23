@@ -1,0 +1,53 @@
+# This workflow will run when a push occurs on main
+name: Plano CLI
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  NEEDS_PUBLISH: false
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - run: git config user.name "$GITHUB_ACTOR"
+      - run: npm install
+      - run: npm test
+
+      - if: ${{ contains(github.event.head_commit.message, 'patch') }}
+        run: |
+          npm version patch
+          echo "NEEDS_PUBLISH=true" >> $GITHUB_ENV
+
+      - if: ${{ contains(github.event.head_commit.message, 'minor') }}
+        run: |
+          npm version minor
+          echo "NEEDS_PUBLISH=true" >> $GITHUB_ENV
+
+      - if: ${{ contains(github.event.head_commit.message, 'major') }}
+        run: |
+          npm version major
+          echo "NEEDS_PUBLISH=true" >> $GITHUB_ENV
+
+      - run: VERSION=$(node -p "require('./package.json').version")
+      - run: git tag ${VERSION}
+        if: ${{ env.NEEDS_PUBLISH == 'true' }}
+      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --follow-tags
+        if: ${{ env.NEEDS_PUBLISH == 'true' }}
+      - run: git push "https://$GITHUB_ACTOR:${{ secrets.ACCESS_TOKEN }}@github.com/$GITHUB_REPOSITORY.git" --tags
+        if: ${{ env.NEEDS_PUBLISH == 'true' }}
+      - run: npm run build
+        if: ${{ env.NEEDS_PUBLISH == 'true' }}
+      - run: npm publish --access public
+        if: ${{ env.NEEDS_PUBLISH == 'true' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -13,7 +13,7 @@ const contextSchema = z.array(
 const helpersSchema = z.record(z.function(z.tuple([z.string()]), z.string()));
 
 async function getContext(path: string) {
-  const { context, helpers } = await import(resolve(path, 'context.js'));
+  const { context, helpers } = await import(resolve(path, 'context.mjs'));
 
   return {
     context: contextSchema.parse(context),

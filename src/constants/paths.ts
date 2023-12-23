@@ -1,1 +1,1 @@
-export const DEFAULT_TEMPLATES_PATH = '~';
+export const TEMPLATES_DIRECTORY_NAME = 'plano-templates';

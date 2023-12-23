@@ -1,3 +1,3 @@
-# typedoc-augment-parser
+# Plano CLI
 
-A parser for TypeDoc JSON Output to improve support for rendering declarations to strings.
+A CLI and programmatic API for generating files from templates with context values and helper functions.

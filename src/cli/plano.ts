@@ -19,7 +19,11 @@ program
   .command('generate')
   .description('Generate files or directories from a template')
   .argument('<name>', 'template name')
-  .option('-p, --templates-paths <path...>', 'Paths to templates')
+  .option(
+    '-p, --templates-paths <path...>',
+    'Paths to templates, must be directory named "plano-templates"',
+    []
+  )
   .action(async (nameArg, optionsArgs) => {
     try {
       const name = z.string().parse(nameArg);

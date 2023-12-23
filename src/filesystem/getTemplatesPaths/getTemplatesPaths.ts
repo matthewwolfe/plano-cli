@@ -1,19 +1,16 @@
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { homedir } from 'node:os';
-import { DEFAULT_TEMPLATES_PATH } from '@pkg/constants/paths';
+import { TEMPLATES_DIRECTORY_NAME } from '@pkg/constants/paths';
 
 import type { TemplatePath } from '@pkg/types/template';
 
-function getTemplatesPaths(paths: string[]): TemplatePath[] {
-  return paths
-    .map((path) => {
-      if (path.startsWith(DEFAULT_TEMPLATES_PATH)) {
-        return resolve(homedir(), path.slice(1));
-      }
+const DEFAULT_TEMPLATE_PATH = `${homedir()}/${TEMPLATES_DIRECTORY_NAME}`;
 
-      return resolve(path);
-    })
+function getTemplatesPaths(paths: string[]): TemplatePath[] {
+  return [DEFAULT_TEMPLATE_PATH, ...paths]
+    .map((path) => resolve(path))
+    .filter((path) => existsSync(path))
     .map((path) =>
       readdirSync(path, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
