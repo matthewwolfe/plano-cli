@@ -7,6 +7,4 @@ export const context = [
   },
 ];
 
-export const helpers = {
-  upperCase: (value) => value.toUpperCase(),
-};
+export const helpers = {};
