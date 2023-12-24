@@ -1,0 +1,1 @@
+export { upperSnakeCase } from './upperSnakeCase';

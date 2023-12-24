@@ -4,7 +4,13 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     coverage: {
-      exclude: ['**/index.ts'],
+      exclude: [
+        'examples',
+        'scripts',
+        'src/__generated__',
+        'src/types',
+        '**/index.ts',
+      ],
     },
     globals: true,
     alias: {

@@ -1,0 +1,1 @@
+export { upperCase } from './upperCase';
