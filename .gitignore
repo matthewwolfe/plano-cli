@@ -1,6 +1,7 @@
 coverage/
 dist/
 node_modules/
+src/__generated__
 temp/
 
 .DS_Store

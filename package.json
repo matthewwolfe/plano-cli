@@ -20,8 +20,9 @@
     }
   },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
+    "dev": "npm run generate:version && tsup --watch",
+    "build": "npm run generate:version && tsup",
+    "generate:version": "node ./scripts/version.js",
     "test": "vitest --coverage",
     "typecheck": "tsc"
   },

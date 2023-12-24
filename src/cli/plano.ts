@@ -9,13 +9,14 @@ import { FormattedError } from '@pkg/errors';
 import { getTemplatesPaths } from '@pkg/filesystem/getTemplatesPaths';
 import { generate } from '@pkg/templates/generate';
 import { getContext } from '@pkg/context/getContext';
+import { VERSION } from '@pkg/__generated__/version';
 
 const program = new Command();
 
 program
   .name('plano')
   .description('CLI to scaffold files and directories from templates')
-  .version('0.0.1');
+  .version(VERSION);
 
 program
   .command('generate')
