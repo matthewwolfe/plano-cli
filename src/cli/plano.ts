@@ -1,15 +1,11 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
 import { Command } from 'commander';
-import inquirer from 'inquirer';
-import { uniq } from 'lodash-es';
 import { z } from 'zod';
-import { FormattedError } from '@pkg/errors';
-import { getTemplatesPaths } from '@pkg/filesystem/getTemplatesPaths';
 import { generate } from '@pkg/templates/generate';
-import { getContext } from '@pkg/context/getContext';
+import { getTemplate } from '@pkg/templates/getTemplate';
 import { VERSION } from '@pkg/__generated__/version';
+import { promptForContext } from '@pkg/context/promptForContext';
 
 const program = new Command();
 
@@ -23,7 +19,7 @@ program
   .description('Generate files or directories from a template')
   .argument('<name>', 'template name')
   .option(
-    '-p, --templates-paths <path...>',
+    '-p, --paths <path...>',
     'Paths to templates, must be directory named "plano-templates"',
     []
   )
@@ -31,33 +27,20 @@ program
     try {
       const name = z.string().parse(nameArg);
 
-      const options = z
+      const { paths } = z
         .object({
-          templatesPaths: z.array(z.string()),
+          paths: z.array(z.string()),
         })
         .parse(optionsArgs);
 
-      const templatesPaths = getTemplatesPaths(options.templatesPaths);
+      const template = getTemplate({ name, paths });
 
-      const template = templatesPaths.find(
-        (templates) => templates.template === name
-      );
-
-      if (!template) {
-        throw new FormattedError([
-          chalk.red(`Unable to find template "${name}" at paths:`),
-          ...uniq(templatesPaths.map((templatesPath) => templatesPath.path)),
-        ]);
-      }
-
-      const { context, helpers = {} } = await getContext(
+      const { context, helpers = {} } = await promptForContext(
         `${template.path}/${name}`
       );
 
-      const answers = await inquirer.prompt<Record<string, unknown>>(context);
-
       generate({
-        context: answers,
+        context,
         helpers,
         templatePath: template,
       });

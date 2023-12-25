@@ -1,4 +1,4 @@
-export const context = [
+export const prompts = [
   {
     message: 'Name',
     name: 'name',
