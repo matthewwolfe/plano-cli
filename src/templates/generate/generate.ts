@@ -1,11 +1,11 @@
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { globSync } from 'glob';
 import Handlebars from 'handlebars';
+import { FormattedError } from '@pkg/errors';
 import { builtins } from '@pkg/helpers';
 
 import type { HelperDelegate } from 'handlebars';
-import { FormattedError } from '@pkg/errors';
 
 interface GenerateOptions {
   template: {
