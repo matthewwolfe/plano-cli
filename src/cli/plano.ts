@@ -34,10 +34,7 @@ program
         .parse(optionsArgs);
 
       const template = getTemplate({ name, paths });
-
-      const { context, helpers = {} } = await promptForContext(
-        `${template.path}/${name}`
-      );
+      const { context, helpers = {} } = await promptForContext({ template });
 
       generate({
         context,
