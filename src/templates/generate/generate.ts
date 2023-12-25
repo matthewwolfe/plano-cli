@@ -5,11 +5,13 @@ import Handlebars from 'handlebars';
 import { builtins } from '@pkg/helpers';
 
 import type { HelperDelegate } from 'handlebars';
-import type { TemplatePath } from '@pkg/types/template';
 import { FormattedError } from '@pkg/errors';
 
 interface GenerateOptions {
-  templatePath: TemplatePath;
+  template: {
+    path: string;
+    template: string;
+  };
   helpers: Record<string, HelperDelegate>;
   context: Record<string, unknown>;
 }
@@ -21,7 +23,7 @@ Object.entries(builtins).map(([key, value]) =>
 function generate({
   context = {},
   helpers = {},
-  templatePath: { path, template },
+  template: { path, template },
 }: GenerateOptions) {
   Object.entries(helpers).map(([key, value]) =>
     Handlebars.registerHelper(key, value)

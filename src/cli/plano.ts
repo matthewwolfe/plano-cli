@@ -39,7 +39,7 @@ program
       generate({
         context,
         helpers,
-        templatePath: template,
+        template,
       });
     } catch (e) {
       if (e instanceof Error) {
