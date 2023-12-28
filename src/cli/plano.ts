@@ -12,7 +12,7 @@ const program = new Command();
 program
   .name('plano')
   .description('CLI to scaffold files and directories from templates')
-  .version(VERSION);
+  .version(VERSION, '-v, --version');
 
 program
   .command('generate')
