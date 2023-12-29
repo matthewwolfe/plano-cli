@@ -20,7 +20,7 @@ Additional paths can be specified.
 ### Generate
 
 ```
-Usage: plano generate [options] <name>
+Usage: plano generate [options] [name]
 
 Generate files or directories from a template
 
