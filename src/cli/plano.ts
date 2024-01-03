@@ -4,7 +4,6 @@ import { Command } from 'commander';
 import { z } from 'zod';
 import { generate } from '@pkg/templates/generate';
 import { getTemplate } from '@pkg/templates/getTemplate';
-import { getAllPaths } from '@pkg/templates/getAllPaths';
 import { VERSION } from '@pkg/__generated__/version';
 import { promptForContext } from '@pkg/context/promptForContext';
 import { promptForTemplate } from '@pkg/templates/promptForTemplate';
