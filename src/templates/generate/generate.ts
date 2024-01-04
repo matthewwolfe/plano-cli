@@ -8,6 +8,7 @@ import { builtins } from '@pkg/helpers';
 import type { HelperDelegate } from 'handlebars';
 
 interface GenerateOptions {
+  copyToPath?: string;
   template: {
     path: string;
     template: string;
@@ -21,6 +22,7 @@ Object.entries(builtins).map(([key, value]) =>
 );
 
 function generate({
+  copyToPath = process.cwd(),
   context = {},
   helpers = {},
   template: { path, template },
@@ -51,7 +53,7 @@ function generate({
     );
 
     if (item.isDirectory()) {
-      mkdirSync(resolve(process.cwd(), resolvedPath));
+      mkdirSync(resolve(copyToPath, resolvedPath));
     }
 
     if (item.isFile()) {
@@ -60,7 +62,7 @@ function generate({
       )(context);
 
       writeFileSync(
-        resolve(process.cwd(), resolvedPath.replace('.handlebars', '')),
+        resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
         content
       );
     }
