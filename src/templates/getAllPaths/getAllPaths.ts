@@ -11,7 +11,9 @@ function getAllPaths(paths: string[]) {
     .filter((path) => existsSync(path))
     .map((path) =>
       readdirSync(path, { withFileTypes: true })
-        .filter((dirent) => dirent.isDirectory())
+        .filter(
+          (dirent) => dirent.isDirectory() && !dirent.name.startsWith('.git')
+        )
         .map((dirent) => ({
           path,
           template: dirent.name,
