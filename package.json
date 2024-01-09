@@ -11,6 +11,8 @@
     "plano": "./dist/cli/plano.js"
   },
   "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
