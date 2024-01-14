@@ -1,10 +1,40 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
-import { TEMPLATES_DIRECTORY_NAME } from '@pkg/constants/paths';
+import {
+  FILE_TEMPLATES_DIRECTORY_NAME,
+  SNIPPET_TEMPLATES_DIRECTORY_NAME,
+  TEMPLATES_DIRECTORY_NAME,
+} from '@pkg/constants/paths';
 
-function getAllPaths(paths: string[]) {
-  const DEFAULT_TEMPLATE_PATH = `${homedir()}/${TEMPLATES_DIRECTORY_NAME}`;
+import type { TemplateType } from '@pkg/types/template';
+import { FormattedError } from '@pkg/errors';
+
+interface GetAllPathsOptions {
+  paths: string[];
+  type: TemplateType;
+}
+
+function getDefaultTemplatePath(type: TemplateType) {
+  switch (type) {
+    case 'file': {
+      return `${homedir()}/${TEMPLATES_DIRECTORY_NAME}/${FILE_TEMPLATES_DIRECTORY_NAME}`;
+    }
+
+    case 'snippet': {
+      return `${homedir()}/${TEMPLATES_DIRECTORY_NAME}/${SNIPPET_TEMPLATES_DIRECTORY_NAME}`;
+    }
+
+    default: {
+      throw new FormattedError([
+        `Unable to get default template path for type: ${type}`,
+      ]);
+    }
+  }
+}
+
+function getAllPaths({ paths, type }: GetAllPathsOptions) {
+  const DEFAULT_TEMPLATE_PATH = getDefaultTemplatePath(type);
 
   return [DEFAULT_TEMPLATE_PATH, ...paths]
     .map((path) => resolve(path))

@@ -18,17 +18,13 @@ interface GenerateOptions {
   context: Record<string, unknown>;
 }
 
-Object.entries(builtins).map(([key, value]) =>
-  Handlebars.registerHelper(key, value),
-);
-
 function generate({
   copyToPath = process.cwd(),
   context = {},
   helpers = {},
   template: { path, template },
 }: GenerateOptions) {
-  Object.entries(helpers).map(([key, value]) =>
+  Object.entries({ ...builtins, ...helpers }).map(([key, value]) =>
     Handlebars.registerHelper(key, value),
   );
 
@@ -60,6 +56,7 @@ function generate({
     if (item.isFile()) {
       const content = compileTemplate({
         context,
+        helpers,
         path: item.fullpath(),
       });
 
