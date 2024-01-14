@@ -12,7 +12,7 @@ function getTemplate({ name, paths }: GetTemplateOptions) {
   const templatesPaths = getAllPaths(paths);
 
   const template = templatesPaths.find(
-    (templates) => templates.template === name
+    (templates) => templates.template === name,
   );
 
   if (!template) {

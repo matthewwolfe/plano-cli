@@ -1,9 +1,10 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { globSync } from 'glob';
 import Handlebars from 'handlebars';
 import { FormattedError } from '@pkg/errors';
 import { builtins } from '@pkg/helpers';
+import { compileTemplate } from '@pkg/templates/compileTemplate';
 
 import type { HelperDelegate } from 'handlebars';
 
@@ -18,7 +19,7 @@ interface GenerateOptions {
 }
 
 Object.entries(builtins).map(([key, value]) =>
-  Handlebars.registerHelper(key, value)
+  Handlebars.registerHelper(key, value),
 );
 
 function generate({
@@ -28,7 +29,7 @@ function generate({
   template: { path, template },
 }: GenerateOptions) {
   Object.entries(helpers).map(([key, value]) =>
-    Handlebars.registerHelper(key, value)
+    Handlebars.registerHelper(key, value),
   );
 
   const templateDirectory = resolve(path, template, 'template');
@@ -49,7 +50,7 @@ function generate({
   for (let item of directoryContent) {
     const resolvedPath = Handlebars.compile(item.fullpath())(context).replace(
       `${templateDirectory}/`,
-      ''
+      '',
     );
 
     if (item.isDirectory()) {
@@ -57,13 +58,14 @@ function generate({
     }
 
     if (item.isFile()) {
-      const content = Handlebars.compile(
-        readFileSync(item.fullpath(), 'utf-8')
-      )(context);
+      const content = compileTemplate({
+        context,
+        path: item.fullpath(),
+      });
 
       writeFileSync(
         resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
-        content
+        content,
       );
     }
   }
