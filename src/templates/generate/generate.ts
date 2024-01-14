@@ -1,12 +1,12 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { globSync } from "glob";
-import Handlebars from "handlebars";
-import { FormattedError } from "@pkg/errors";
-import { builtins } from "@pkg/helpers";
-import { compileTemplate } from "@pkg/templates/compileTemplate";
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { globSync } from 'glob';
+import Handlebars from 'handlebars';
+import { FormattedError } from '@pkg/errors';
+import { builtins } from '@pkg/helpers';
+import { compileTemplate } from '@pkg/templates/compileTemplate';
 
-import type { HelperDelegate } from "handlebars";
+import type { HelperDelegate } from 'handlebars';
 
 interface GenerateOptions {
   copyToPath?: string;
@@ -32,16 +32,16 @@ function generate({
     Handlebars.registerHelper(key, value)
   );
 
-  const templateDirectory = resolve(path, template, "template");
+  const templateDirectory = resolve(path, template, 'template');
 
   const directoryContent = globSync(`${templateDirectory}/**/*`, {
     withFileTypes: true,
   });
 
   directoryContent.forEach((item) => {
-    if (item.isFile() && !item.name.endsWith(".handlebars")) {
+    if (item.isFile() && !item.name.endsWith('.handlebars')) {
       throw new FormattedError([
-        "Template files must end with .handlebars:",
+        'Template files must end with .handlebars:',
         item.fullpath(),
       ]);
     }
@@ -50,7 +50,7 @@ function generate({
   for (let item of directoryContent) {
     const resolvedPath = Handlebars.compile(item.fullpath())(context).replace(
       `${templateDirectory}/`,
-      ""
+      ''
     );
 
     if (item.isDirectory()) {
@@ -61,11 +61,10 @@ function generate({
       const content = compileTemplate({
         context,
         path: item.fullpath(),
-        options: "utf-8",
       });
 
       writeFileSync(
-        resolve(copyToPath, resolvedPath.replace(".handlebars", "")),
+        resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
         content
       );
     }

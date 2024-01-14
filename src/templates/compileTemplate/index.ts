@@ -1,1 +1,1 @@
-export { default as compileTemplate } from "./compileTemplate";
+export { default as compileTemplate } from './compileTemplate';
