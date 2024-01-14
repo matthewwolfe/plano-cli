@@ -6,8 +6,8 @@ interface CompileTemplate {
   path: string;
 }
 
-const compileTemplate = ({ context = {}, path }: CompileTemplate) => {
+function compileTemplate({ context = {}, path }: CompileTemplate) {
   return Handlebars.compile(readFileSync(path, 'utf-8'))(context);
-};
+}
 
-export default compileTemplate;
+export { compileTemplate };
