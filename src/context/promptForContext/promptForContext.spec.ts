@@ -39,7 +39,7 @@ describe('promptForContext', () => {
     expect(() =>
       promptForContext({
         template: { path: 'invalid-prompts', template: 'mock-template' },
-      })
+      }),
     ).rejects.toThrowError();
   });
 
@@ -54,7 +54,7 @@ describe('promptForContext', () => {
     expect(() =>
       promptForContext({
         template: { path: 'invalid-helpers', template: 'mock-template' },
-      })
+      }),
     ).rejects.toThrowError();
   });
 

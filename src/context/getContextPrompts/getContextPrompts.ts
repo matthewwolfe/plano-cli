@@ -16,12 +16,12 @@ const promptsSchema = z.optional(
       name: z.string(),
       required: z.boolean(),
       type: z.union([z.literal('input'), z.literal('select')]),
-    })
-  )
+    }),
+  ),
 );
 
 const helpersSchema = z.optional(
-  z.record(z.function(z.tuple([z.string()]), z.string()))
+  z.record(z.function(z.tuple([z.string()]), z.string())),
 );
 
 async function getContextPrompts({

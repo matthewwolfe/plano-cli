@@ -22,7 +22,7 @@ program
   .option(
     '-p, --paths <path...>',
     'Paths to templates, must be directory named "plano-templates"',
-    []
+    [],
   )
   .action(async (nameArg, optionsArgs) => {
     try {

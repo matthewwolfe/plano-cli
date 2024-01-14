@@ -12,12 +12,12 @@ function getAllPaths(paths: string[]) {
     .map((path) =>
       readdirSync(path, { withFileTypes: true })
         .filter(
-          (dirent) => dirent.isDirectory() && !dirent.name.startsWith('.git')
+          (dirent) => dirent.isDirectory() && !dirent.name.startsWith('.git'),
         )
         .map((dirent) => ({
           path,
           template: dirent.name,
-        }))
+        })),
     )
     .flat();
 }

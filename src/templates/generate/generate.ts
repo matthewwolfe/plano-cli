@@ -19,7 +19,7 @@ interface GenerateOptions {
 }
 
 Object.entries(builtins).map(([key, value]) =>
-  Handlebars.registerHelper(key, value)
+  Handlebars.registerHelper(key, value),
 );
 
 function generate({
@@ -29,7 +29,7 @@ function generate({
   template: { path, template },
 }: GenerateOptions) {
   Object.entries(helpers).map(([key, value]) =>
-    Handlebars.registerHelper(key, value)
+    Handlebars.registerHelper(key, value),
   );
 
   const templateDirectory = resolve(path, template, 'template');
@@ -50,7 +50,7 @@ function generate({
   for (let item of directoryContent) {
     const resolvedPath = Handlebars.compile(item.fullpath())(context).replace(
       `${templateDirectory}/`,
-      ''
+      '',
     );
 
     if (item.isDirectory()) {
@@ -65,7 +65,7 @@ function generate({
 
       writeFileSync(
         resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
-        content
+        content,
       );
     }
   }
