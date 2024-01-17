@@ -1,6 +1,6 @@
 # Plano CLI
 
-A CLI and programmatic API for generating files and/or directories from
+A CLI and programmatic API for generating files, directories, and snippets from
 templates with context values and helper functions.
 
 ## Getting Started
@@ -21,22 +21,30 @@ Additional paths can be specified.
 ### Generate
 
 ```
-Usage: plano generate [options] [name]
+Usage: plano [options] [command]
 
-Generate files or directories from a template
-
-Arguments:
-  name                   template name
+CLI to scaffold files and directories from templates
 
 Options:
-  -p, --paths <path...>  Paths to templates, must be directory named "plano" (default: [])
-  -h, --help             display help for command
+  -v, --version              output the version number
+  -h, --help                 display help for command
+
+Commands:
+  generate [options] [name]  Generate files or directories from a template
+  snippet [options] [name]   Generate a snippet from a template
+  help [command]             display help for command
 ```
 
-#### Example
+#### File/Directory Example
 
 ```
 plano generate react-component
+```
+
+#### Snippet Example
+
+```
+plano snippet vitest-test
 ```
 
 #### Example with paths
