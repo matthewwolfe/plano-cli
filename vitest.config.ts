@@ -10,6 +10,8 @@ export default defineConfig({
         'src/__generated__',
         'src/types',
         '**/index.ts',
+        'tsup.config.ts',
+        'vitest.config.ts',
       ],
     },
     globals: true,
