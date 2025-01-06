@@ -15,7 +15,12 @@ const promptsSchema = z.optional(
       message: z.string(),
       name: z.string(),
       required: z.boolean(),
-      type: z.union([z.literal('input'), z.literal('select')]),
+      type: z.union([
+        z.literal('checkbox'),
+        z.literal('input'),
+        z.literal('select'),
+      ]),
+      default: z.string(),
     }),
   ),
 );

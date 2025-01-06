@@ -1,0 +1,17 @@
+{
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "vscode.configuration-editing"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features"
+  },
+  "files.associations": {
+    "*.json.handlebars": "json",
+    "*.yaml.handlebars": "yaml",
+    "*.yml.handlebars": "yaml",
+    "*.md.handlebars": "markdown"
+  }
+}
