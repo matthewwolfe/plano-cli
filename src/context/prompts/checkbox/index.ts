@@ -1,0 +1,1 @@
+export { checkboxSchema } from './checkbox';

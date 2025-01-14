@@ -1,0 +1,1 @@
+export { inputSchema } from './input';

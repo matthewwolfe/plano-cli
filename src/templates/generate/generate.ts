@@ -27,7 +27,7 @@ function generate({
     Handlebars.registerHelper(key, value),
   );
 
-  const templateDirectory = resolve(path, template, 'templates');
+  const templateDirectory = resolve(path, template, 'template');
 
   const directoryContent = globSync(`${templateDirectory}/**/*`, {
     withFileTypes: true,
