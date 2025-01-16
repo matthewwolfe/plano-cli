@@ -26,24 +26,37 @@ async function promptForContext(options: PromptForContextOptions) {
 
   const context: Record<string, unknown> = {};
 
-  for (let x = 0; x < prompts.length; x++) {
-    const { type, ...prompt } = prompts[x];
-    let result;
+  for (let i = 0; i < prompts.length; i++) {
+    const { type, ...prompt } = prompts[i];
+
     switch (type) {
-      case 'checkbox':
-        result = await checkbox(prompt as z.infer<typeof checkboxSchema>);
-        context[prompt.name] = result;
+      case 'checkbox': {
+        context[prompt.name] = await checkbox(
+          prompt as z.infer<typeof checkboxSchema>,
+        );
+
         break;
-      case 'input':
-        result = await input(prompt as z.infer<typeof inputSchema>);
-        context[prompt.name] = result;
+      }
+
+      case 'input': {
+        context[prompt.name] = await input(
+          prompt as z.infer<typeof inputSchema>,
+        );
+
         break;
-      case 'select':
-        result = await select(prompt as z.infer<typeof selectSchema>);
-        context[prompt.name] = result;
+      }
+
+      case 'select': {
+        context[prompt.name] = await select(
+          prompt as z.infer<typeof selectSchema>,
+        );
+
         break;
-      default:
+      }
+
+      default: {
         break;
+      }
     }
   }
 
