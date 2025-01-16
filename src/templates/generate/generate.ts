@@ -1,8 +1,7 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, copyFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { globSync } from 'glob';
 import Handlebars from 'handlebars';
-import { FormattedError } from '@pkg/errors';
 import { builtins } from '@pkg/helpers';
 import { compileTemplate } from '@pkg/templates/compileTemplate';
 
@@ -32,19 +31,13 @@ function generate({
 
   const directoryContent = globSync(`${templateDirectory}/**/*`, {
     withFileTypes: true,
-  });
-
-  directoryContent.forEach((item) => {
-    if (item.isFile() && !item.name.endsWith('.handlebars')) {
-      throw new FormattedError([
-        'Template files must end with .handlebars:',
-        item.fullpath(),
-      ]);
-    }
+    dot: true,
   });
 
   for (let item of directoryContent) {
-    const resolvedPath = Handlebars.compile(item.fullpath())(context).replace(
+    const fullpath = item.fullpath();
+
+    const resolvedPath = Handlebars.compile(fullpath)(context).replace(
       `${templateDirectory}/`,
       '',
     );
@@ -54,16 +47,25 @@ function generate({
     }
 
     if (item.isFile()) {
-      const content = compileTemplate({
-        context,
-        helpers,
-        path: item.fullpath(),
-      });
+      if (!item.name.endsWith('.handlebars')) {
+        const resolvedPath = resolve(copyToPath, fullpath).replace(
+          `${templateDirectory}/`,
+          '',
+        );
 
-      writeFileSync(
-        resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
-        content,
-      );
+        copyFileSync(fullpath, resolvedPath);
+      } else {
+        const content = compileTemplate({
+          context,
+          helpers,
+          path: fullpath,
+        });
+
+        writeFileSync(
+          resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
+          content,
+        );
+      }
     }
   }
 }

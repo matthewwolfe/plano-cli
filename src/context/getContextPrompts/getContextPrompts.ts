@@ -1,6 +1,12 @@
+import { checkbox, input, select } from '@inquirer/prompts';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import { existsSync } from 'node:fs';
+import {
+  checkboxSchema,
+  inputSchema,
+  selectSchema,
+} from '@pkg/context/prompts';
 
 interface GetContextPromptsOptions {
   template: {
@@ -11,12 +17,7 @@ interface GetContextPromptsOptions {
 
 const promptsSchema = z.optional(
   z.array(
-    z.object({
-      message: z.string(),
-      name: z.string(),
-      required: z.boolean(),
-      type: z.union([z.literal('input'), z.literal('select')]),
-    }),
+    z.discriminatedUnion('type', [checkboxSchema, inputSchema, selectSchema]),
   ),
 );
 

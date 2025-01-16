@@ -1,4 +1,4 @@
-import inquirer from 'inquirer';
+import { select } from '@inquirer/prompts';
 import { sortedUniq } from 'lodash-es';
 import { getAllPaths } from '../getAllPaths';
 
@@ -18,14 +18,12 @@ interface PromptForTemplateOptions {
 async function promptForTemplate({ paths, type }: PromptForTemplateOptions) {
   const templatesPaths = getAllPaths({ paths, type });
 
-  const { template } = await inquirer.prompt<{ template: string }>([
-    {
-      name: 'template',
-      message: 'Select a template',
-      type: 'list',
-      choices: sortedUniq(templatesPaths.map(({ template }) => template)),
-    },
-  ]);
+  const template = await select({
+    message: 'Select a template',
+    choices: sortedUniq(
+      templatesPaths.map(({ template }) => ({ value: template })),
+    ),
+  });
 
   return template;
 }
