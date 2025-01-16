@@ -1,16 +1,15 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import inquirer from 'inquirer';
+import { checkbox, input, select } from '@inquirer/prompts';
 import { describe, expect, test, vi } from 'vitest';
 import { promptForContext } from './promptForContext';
 
 vi.mock('node:fs');
 vi.mock('node:path');
-vi.mock('inquirer');
+vi.mock('@inquirer/prompts');
 
 const mockedExistsSync = vi.mocked(existsSync);
 const mockedResolve = vi.mocked(resolve);
-const mockedInquirer = vi.mocked(inquirer);
 
 mockedResolve.mockImplementation((...paths: string[]) => paths.join('/'));
 
