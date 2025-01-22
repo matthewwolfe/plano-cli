@@ -1,11 +1,5 @@
-import { z } from 'zod';
 import { checkbox, input, select } from '@inquirer/prompts';
 import { getContextPrompts } from '@pkg/context/getContextPrompts';
-import {
-  checkboxSchema,
-  inputSchema,
-  selectSchema,
-} from '@pkg/context/prompts';
 
 interface PromptForContextOptions {
   template: {
@@ -27,30 +21,21 @@ async function promptForContext(options: PromptForContextOptions) {
   const context: Record<string, unknown> = {};
 
   for (let i = 0; i < prompts.length; i++) {
-    const { type, ...prompt } = prompts[i];
+    const prompt = prompts[i];
 
-    switch (type) {
+    switch (prompt.type) {
       case 'checkbox': {
-        context[prompt.name] = await checkbox(
-          prompt as z.infer<typeof checkboxSchema>,
-        );
-
+        context[prompt.name] = await checkbox(prompt);
         break;
       }
 
       case 'input': {
-        context[prompt.name] = await input(
-          prompt as z.infer<typeof inputSchema>,
-        );
-
+        context[prompt.name] = await input(prompt);
         break;
       }
 
       case 'select': {
-        context[prompt.name] = await select(
-          prompt as z.infer<typeof selectSchema>,
-        );
-
+        context[prompt.name] = await select(prompt);
         break;
       }
 
