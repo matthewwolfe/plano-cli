@@ -1,4 +1,3 @@
-import { checkbox, input, select } from '@inquirer/prompts';
 import { resolve } from 'node:path';
 import { z } from 'zod';
 import { existsSync } from 'node:fs';
