@@ -8,6 +8,7 @@ import { VERSION } from '@pkg/__generated__/version';
 import { promptForContext } from '@pkg/context/promptForContext';
 import { compileTemplate } from '@pkg/templates/compileTemplate';
 import { promptForTemplate } from '@pkg/templates/promptForTemplate';
+import { getContextPrompts } from '@pkg/context/getContextPrompts';
 
 const program = new Command();
 
@@ -49,8 +50,13 @@ program
         type: 'file',
       });
 
-      const { context, helpers = {} } = await promptForContext({
+      const { helpers: contextHelpers, prompts } = await getContextPrompts({
         template,
+      });
+
+      const { context, helpers } = await promptForContext({
+        helpers: contextHelpers,
+        prompts,
       });
 
       generate({
