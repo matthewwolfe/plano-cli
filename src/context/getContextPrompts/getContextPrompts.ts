@@ -7,7 +7,12 @@ import {
   selectSchema,
 } from '@pkg/context/prompts';
 
-import type { PromptForContextOptions } from '../promptForContext/promptForContext';
+interface GetContextPromptsOptions {
+  template: {
+    path: string;
+    template: string;
+  };
+}
 
 const promptsSchema = z.optional(
   z.array(
@@ -22,8 +27,7 @@ const helpersSchema = z.optional(
 
 async function getContextPrompts({
   template: { path, template },
-  preprocessContext,
-}: PromptForContextOptions) {
+}: GetContextPromptsOptions) {
   const contextFilePath = resolve(`${path}/${template}`, 'context.mjs');
 
   if (!existsSync(contextFilePath)) {
@@ -34,10 +38,6 @@ async function getContextPrompts({
   }
 
   let { prompts, helpers } = await import(contextFilePath);
-
-  if (preprocessContext) {
-    prompts = preprocessContext(prompts);
-  }
 
   const parsedPrompts = promptsSchema.parse(prompts) || [];
   const parsedHelpers = helpersSchema.parse(helpers) || {};
