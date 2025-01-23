@@ -1,16 +1,19 @@
 import { checkbox, input, select } from '@inquirer/prompts';
-import { getContextPrompts } from '@pkg/context/getContextPrompts';
+
+import type {
+  HelpersSchema,
+  PromptsSchema,
+} from '@pkg/context/getContextPrompts';
 
 interface PromptForContextOptions {
-  template: {
-    path: string;
-    template: string;
-  };
+  helpers: HelpersSchema;
+  prompts: PromptsSchema;
 }
 
-async function promptForContext(options: PromptForContextOptions) {
-  const { prompts, helpers } = await getContextPrompts(options);
-
+async function promptForContext({
+  helpers = {},
+  prompts,
+}: PromptForContextOptions) {
   if (!prompts) {
     return {
       context: {},
