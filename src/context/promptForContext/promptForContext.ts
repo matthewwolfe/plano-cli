@@ -14,7 +14,7 @@ async function promptForContext({
   helpers = {},
   prompts,
 }: PromptForContextOptions) {
-  if (!prompts) {
+  if (!prompts || !Array.isArray(prompts)) {
     return {
       context: {},
       helpers,
