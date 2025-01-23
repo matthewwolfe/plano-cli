@@ -7,18 +7,14 @@ import {
   selectSchema,
 } from '@pkg/context/prompts';
 
-interface GetContextPromptsOptions {
-  template: {
-    path: string;
-    template: string;
-  };
-}
+import type { PromptForContextOptions } from '../promptForContext/promptForContext';
 
 const promptsSchema = z.optional(
   z.array(
     z.discriminatedUnion('type', [checkboxSchema, inputSchema, selectSchema]),
   ),
 );
+export type PromptsSchema = z.infer<typeof promptsSchema>;
 
 const helpersSchema = z.optional(
   z.record(z.function(z.tuple([z.string()]), z.string())),
@@ -26,7 +22,8 @@ const helpersSchema = z.optional(
 
 async function getContextPrompts({
   template: { path, template },
-}: GetContextPromptsOptions) {
+  preprocessContext,
+}: PromptForContextOptions) {
   const contextFilePath = resolve(`${path}/${template}`, 'context.mjs');
 
   if (!existsSync(contextFilePath)) {
@@ -36,7 +33,11 @@ async function getContextPrompts({
     };
   }
 
-  const { prompts, helpers } = await import(contextFilePath);
+  let { prompts, helpers } = await import(contextFilePath);
+
+  if (preprocessContext) {
+    prompts = preprocessContext(prompts);
+  }
 
   const parsedPrompts = promptsSchema.parse(prompts) || [];
   const parsedHelpers = helpersSchema.parse(helpers) || {};
