@@ -35,12 +35,13 @@ function getDefaultTemplatePath(type: TemplateType) {
 }
 
 function getAllPaths({ includeDefaultPath, paths, type }: GetAllPathsOptions) {
+  const allPaths: string[] = [];
+
   if (includeDefaultPath) {
-    const DEFAULT_TEMPLATE_PATH = getDefaultTemplatePath(type);
-    paths.push(DEFAULT_TEMPLATE_PATH);
+    allPaths.push(getDefaultTemplatePath(type));
   }
 
-  return paths
+  return [...allPaths, ...paths]
     .map((path) => resolve(path))
     .filter((path) => existsSync(path))
     .map((path) =>
