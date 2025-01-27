@@ -34,7 +34,11 @@ function getDefaultTemplatePath(type: TemplateType) {
   }
 }
 
-function getAllPaths({ includeDefaultPath, paths, type }: GetAllPathsOptions) {
+function getAllPaths({
+  includeDefaultPath = true,
+  paths,
+  type,
+}: GetAllPathsOptions) {
   const allPaths: string[] = [];
 
   if (includeDefaultPath) {
