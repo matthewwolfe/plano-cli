@@ -11,6 +11,7 @@ import type { TemplateType } from '@pkg/types/template';
 import { FormattedError } from '@pkg/errors';
 
 interface GetAllPathsOptions {
+  includeDefaultPath?: boolean;
   paths: string[];
   type: TemplateType;
 }
@@ -33,10 +34,14 @@ function getDefaultTemplatePath(type: TemplateType) {
   }
 }
 
-function getAllPaths({ paths, type }: GetAllPathsOptions) {
-  const DEFAULT_TEMPLATE_PATH = getDefaultTemplatePath(type);
+function getAllPaths({ includeDefaultPath, paths, type }: GetAllPathsOptions) {
+  const allPaths: string[] = [];
 
-  return [DEFAULT_TEMPLATE_PATH, ...paths]
+  if (includeDefaultPath) {
+    allPaths.push(getDefaultTemplatePath(type));
+  }
+
+  return [...allPaths, ...paths]
     .map((path) => resolve(path))
     .filter((path) => existsSync(path))
     .map((path) =>
