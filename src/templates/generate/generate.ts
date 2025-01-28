@@ -48,12 +48,7 @@ function generate({
 
     if (item.isFile()) {
       if (!item.name.endsWith('.handlebars')) {
-        const resolvedPath = resolve(copyToPath, fullpath).replace(
-          `${templateDirectory}/`,
-          '',
-        );
-
-        copyFileSync(fullpath, resolvedPath);
+        copyFileSync(fullpath, resolve(copyToPath, resolvedPath));
       } else {
         const content = compileTemplate({
           context,
