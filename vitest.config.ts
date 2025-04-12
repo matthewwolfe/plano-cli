@@ -6,6 +6,7 @@ export default defineConfig({
     coverage: {
       exclude: [
         'examples',
+        'dist',
         'scripts',
         'src/__generated__',
         'src/types',

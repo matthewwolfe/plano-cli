@@ -6,6 +6,7 @@ const selectChoiceSchema = z
     value: z.string(),
   })
   .passthrough();
+
 export const selectSchema = basePromptSchema
   .extend({
     type: z.literal('select'),

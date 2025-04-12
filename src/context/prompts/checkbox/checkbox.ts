@@ -6,6 +6,7 @@ export const checkboxChoiceSchema = z
     value: z.string(),
   })
   .passthrough();
+
 export const checkboxSchema = basePromptSchema
   .extend({
     type: z.literal('checkbox'),

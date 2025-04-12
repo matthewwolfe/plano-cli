@@ -19,11 +19,13 @@ const promptsSchema = z.optional(
     z.discriminatedUnion('type', [checkboxSchema, inputSchema, selectSchema]),
   ),
 );
+
 export type PromptsSchema = z.infer<typeof promptsSchema>;
 
 const helpersSchema = z.optional(
   z.record(z.function(z.tuple([z.string()]), z.string())),
 );
+
 export type HelpersSchema = z.infer<typeof helpersSchema>;
 
 async function getContextPrompts({
