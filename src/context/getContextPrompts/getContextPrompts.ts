@@ -23,7 +23,13 @@ const promptsSchema = z.optional(
 export type PromptsSchema = z.infer<typeof promptsSchema>;
 
 const helpersSchema = z.optional(
-  z.record(z.function(z.tuple([z.string()]), z.string())),
+  z.record(
+    z.string(),
+    z.function({
+      input: z.tuple([z.string()]),
+      output: z.string(),
+    }),
+  ),
 );
 
 export type HelpersSchema = z.infer<typeof helpersSchema>;
