@@ -31,7 +31,6 @@ function generate({
   helpers = {},
   template: { path, template },
 }: GenerateOptions) {
-
   Object.entries({ ...builtins, ...helpers }).map(([key, value]) =>
     Handlebars.registerHelper(key, value),
   );
@@ -46,10 +45,9 @@ function generate({
   for (let item of directoryContent) {
     const fullpath = item.fullpath();
 
-    const resolvedPath = unescapePathForWindows(Handlebars.compile(escapePathForWindows(fullpath))(context)).replace(
-      `${templateDirectory}${sep}`,
-      '',
-    );
+    const resolvedPath = unescapePathForWindows(
+      Handlebars.compile(escapePathForWindows(fullpath))(context),
+    ).replace(`${templateDirectory}${sep}`, '');
 
     if (item.isDirectory()) {
       mkdirSync(resolve(copyToPath, resolvedPath));
@@ -64,7 +62,7 @@ function generate({
           helpers,
           path: fullpath,
         });
-        
+
         writeFileSync(
           resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
           content,
