@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync, copyFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 import { globSync } from 'glob';
 import Handlebars from 'handlebars';
 import { builtins } from '@pkg/helpers';
@@ -17,12 +17,21 @@ interface GenerateOptions {
   context: Record<string, unknown>;
 }
 
+function escapePathForWindows(path: string) {
+  return path.replace(/\\/g, '\\\\');
+}
+
+function unescapePathForWindows(path: string) {
+  return path.replace(/\\\\/g, '\\');
+}
+
 function generate({
   copyToPath = process.cwd(),
   context = {},
   helpers = {},
   template: { path, template },
 }: GenerateOptions) {
+
   Object.entries({ ...builtins, ...helpers }).map(([key, value]) =>
     Handlebars.registerHelper(key, value),
   );
@@ -37,8 +46,8 @@ function generate({
   for (let item of directoryContent) {
     const fullpath = item.fullpath();
 
-    const resolvedPath = Handlebars.compile(fullpath)(context).replace(
-      `${templateDirectory}/`,
+    const resolvedPath = unescapePathForWindows(Handlebars.compile(escapePathForWindows(fullpath))(context)).replace(
+      `${templateDirectory}${sep}`,
       '',
     );
 
@@ -55,7 +64,7 @@ function generate({
           helpers,
           path: fullpath,
         });
-
+        
         writeFileSync(
           resolve(copyToPath, resolvedPath.replace('.handlebars', '')),
           content,
